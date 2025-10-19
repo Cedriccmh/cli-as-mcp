@@ -1,0 +1,66 @@
+{
+  "name": "claude-cli",
+  "command": "claude",
+  "description": "Claude Code CLI as MCP server",
+  "environment": {},
+  "tools": [
+    {
+      "name": "run_task",
+      "description": "Execute a Claude CLI task from a markdown file",
+      "parameters": {
+        "task_path": {
+          "type": "string",
+          "description": "Path to the task markdown file (relative or absolute)",
+          "required": true
+        }
+      },
+      "command_template": "claude --dangerously-skip-permissions \"prompt path {task_path}\"",
+      "output_format": "text",
+      "timeout": 300
+    },
+    {
+      "name": "run_prompt",
+      "description": "Execute a Claude CLI prompt directly",
+      "parameters": {
+        "prompt": {
+          "type": "string",
+          "description": "The prompt to execute",
+          "required": true
+        }
+      },
+      "command_template": "claude --dangerously-skip-permissions \"{prompt}\"",
+      "output_format": "text",
+      "timeout": 180
+    },
+    {
+      "name": "search_codebase",
+      "description": "Search the codebase for a topic and generate a report",
+      "parameters": {
+        "topic": {
+          "type": "string",
+          "description": "Topic to search for",
+          "required": true
+        },
+        "report_path": {
+          "type": "string",
+          "description": "Path where the report should be saved",
+          "default": ".claude-tasks/reports/latest/search-report.md"
+        }
+      },
+      "command_template": "echo '/tr:withScout\n\n# Search for {topic}\n\nFind all code related to {topic} and create report at:\n`{report_path}`' | claude --dangerously-skip-permissions",
+      "output_format": "text",
+      "timeout": 300
+    }
+  ],
+  "resources": [
+    {
+      "uri": "claude://latest-report",
+      "name": "Latest Report",
+      "description": "The most recent Claude task report",
+      "command": "cat .claude-tasks/reports/latest/*.md | head -n 1000",
+      "mime_type": "text/markdown"
+    }
+  ],
+  "working_directory": "."
+}
+

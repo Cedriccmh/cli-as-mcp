@@ -1,0 +1,89 @@
+{
+  "name": "git-mcp",
+  "command": "git",
+  "description": "Git CLI as MCP server",
+  "environment": {},
+  "tools": [
+    {
+      "name": "git_status",
+      "description": "Get the current git repository status",
+      "parameters": {},
+      "command_template": "git status",
+      "output_format": "text",
+      "timeout": 10
+    },
+    {
+      "name": "git_log",
+      "description": "View git commit history",
+      "parameters": {
+        "limit": {
+          "type": "integer",
+          "description": "Number of commits to show",
+          "default": 10
+        }
+      },
+      "command_template": "git log -n {limit} --oneline",
+      "output_format": "text",
+      "timeout": 10
+    },
+    {
+      "name": "git_diff",
+      "description": "Show changes in the working directory",
+      "parameters": {
+        "file": {
+          "type": "string",
+          "description": "Specific file to diff (optional)",
+          "required": false
+        }
+      },
+      "command_template": "git diff{#if file} {file}{/if}",
+      "output_format": "text",
+      "timeout": 15
+    },
+    {
+      "name": "git_commit",
+      "description": "Create a git commit",
+      "parameters": {
+        "message": {
+          "type": "string",
+          "description": "Commit message",
+          "required": true
+        }
+      },
+      "command_template": "git commit -m '{message}'",
+      "output_format": "text",
+      "timeout": 10
+    },
+    {
+      "name": "git_branch",
+      "description": "List or create branches",
+      "parameters": {
+        "name": {
+          "type": "string",
+          "description": "Branch name to create (optional)",
+          "required": false
+        }
+      },
+      "command_template": "git branch{#if name} {name}{/if}",
+      "output_format": "text",
+      "timeout": 10
+    }
+  ],
+  "resources": [
+    {
+      "uri": "git://status",
+      "name": "Git Status",
+      "description": "Current git repository status",
+      "command": "git status",
+      "mime_type": "text/plain"
+    },
+    {
+      "uri": "git://log",
+      "name": "Git Log",
+      "description": "Recent commit history",
+      "command": "git log -n 20 --pretty=format:'%h - %an, %ar : %s'",
+      "mime_type": "text/plain"
+    }
+  ],
+  "working_directory": "."
+}
