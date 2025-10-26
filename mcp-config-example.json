@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "scouts": {
+      "command": "node",
+      "args": [
+        "dist/server.js"
+      ],
+      "env": {
+        "CCR_PATH": "Path to ccr executable (required if ccr is not in PATH)",
+        "CCR_TIMEOUT_MS": "Timeout in milliseconds (default: 600000 = 10 minutes)"
+      }
+    }
+  }
+}

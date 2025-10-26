@@ -8,7 +8,7 @@ Scouts is a parallel hybrid search engine optimized for large codebase understan
 
 - Scouts operates with multiple "Intent Workers", each handling an independent search objective
 - Each intent can search across different domains (codebase, documentation, commit history) in parallel
-- Results are consolidated into a single markdown file at `.scouts/result/yy-mm-dd-hh-[topic].md`
+- Results are consolidated into a single markdown file at `.kilocode/sub-memory-bank/report/yy-mm-dd-[topic].md`
 
 ## When to Use Scouts
 
@@ -22,10 +22,10 @@ Scouts is a parallel hybrid search engine optimized for large codebase understan
 
 ### 1. Create Search Task
 
-Create a task file at `.scouts/tasks/[topic].md` with the following structure:
+Create a task file at `.kilocode/sub-memory-bank/tasks/yy-mm-dd-[topic].md` with the following structure:
 
 ```markdown
-/tr:withScout
+/scouts:withScout
 
 # [Task Name]
 
@@ -42,14 +42,14 @@ Create a task file at `.scouts/tasks/[topic].md` with the following structure:
 Run the following command in your terminal:
 
 ```bash
-claude --dangerously-skip-permissions "task file `.scouts/tasks/yy-mm-dd-hh-[topic].md`"
+ccr code --dangerously-skip-permissions 'task file `.kilocode/sub-memory-bank/tasks/yy-mm-dd-[topic].md`'
 ```
 
 This command triggers parallel Scout tasks and consolidates the output into a summary document.
 
 ### 3. Read Results
 
-Access the consolidated results at: `.scouts/result/yy-mm-dd-hh-[topic].md`
+Access the consolidated results at: `.kilocode/sub-memory-bank/result/yy-mm-dd-[topic].md`
 
 ## Best Practices
 
