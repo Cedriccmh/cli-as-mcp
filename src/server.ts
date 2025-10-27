@@ -115,8 +115,16 @@ async function resolveCcrInvocation(): Promise<{ command: string; prefixArgs: st
 async function runCcr(taskPath: string, logPaths?: string[]): Promise<{ stdout: string; stderr: string }> {
   return new Promise(async (resolve, reject) => {
     const resolved = await resolveCcrInvocation();
-    const promptArg = `task file ${taskPath}`;
-    const args = [...resolved.prefixArgs, "code", "--dangerously-skip-permissions", promptArg];
+    const promptArg = `/scouts:withScout task file ${taskPath}`;
+    
+    // CCR_SUBCOMMAND env var allows configuring the ccr subcommand (e.g., "code")
+    // Default is empty (no subcommand)
+    const subcommand = process.env.CCR_SUBCOMMAND?.trim();
+    const baseArgs = [...resolved.prefixArgs];
+    if (subcommand && subcommand.length > 0) {
+      baseArgs.push(subcommand);
+    }
+    const args = [...baseArgs, "--dangerously-skip-permissions", promptArg];
     const command = resolved.command;
 
     // Determine spawn CWD from task path
@@ -424,7 +432,7 @@ The task file should follow this format:
 - file_types: e.g. .ts,.js,.py
 - context: background info
 
-This tool runs: ccr code --dangerously-skip-permissions 'task file <taskPath>'
+This tool runs: [claude_path] [subcommand(default: empty)] --dangerously-skip-permissions 'task file <taskPath>'
 Returns the absolute path to that result file.
 
 Use for feature design, debugging, and refactoring; define focused intents and relevant domains for best results.`,
@@ -433,7 +441,7 @@ Use for feature design, debugging, and refactoring; define focused intents and r
           properties: {
             taskPath: {
               type: "string",
-              description: "Path to the task.md file",
+              description: "Absolute path to the task.md file",
             },
           },
           required: ["taskPath"],

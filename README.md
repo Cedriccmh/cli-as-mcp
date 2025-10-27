@@ -5,7 +5,7 @@ A Model Context Protocol (MCP) server that exposes the `scouts_search` tool, whi
 ## Overview
 
 This MCP server provides a single tool:
-- **scouts_search**: Takes a task file path, runs `ccr code` on it, and returns the path to the generated `result.md` file.
+- **scouts_search**: Takes a task file path, runs `ccr [subcommand]` on it, and returns the path to the generated `result.md` file. The subcommand is configurable via `CCR_SUBCOMMAND` environment variable.
 
 ## Prerequisites
 
@@ -78,7 +78,7 @@ Or if installed globally:
 ### Behavior
 
 1. Resolves the absolute path to the task file
-2. Runs: `ccr code --dangerously-skip-permissions 'task file <taskPath>'`
+2. Runs: `ccr [subcommand] --dangerously-skip-permissions 'task file <taskPath>'` (where subcommand is from `CCR_SUBCOMMAND` env var, default: none)
 3. Checks if `result.md` was created in the same directory as the task file
 4. If `result.md` doesn't exist, writes ccr's stdout to `result.md` as a fallback
 5. Returns the absolute path to `result.md`
@@ -97,6 +97,7 @@ If you have a task file at `.kilocode/sub-memory-bank/tasks/2025-10-25-example.m
 ## Environment Variables
 
 - `CCR_PATH`: Custom path to the `ccr` executable (defaults to `ccr` on PATH). If you wrap it in quotes in your config, the server strips them automatically. For testing, you can point this to the dummy script (e.g., `C:\path\to\scripts\ccr-dummy.ps1`).
+- `CCR_SUBCOMMAND`: CCR subcommand to use (e.g., `code`). Default: empty (no subcommand). This allows flexibility in how you invoke ccr.
 - `CCR_TIMEOUT_MS`: Timeout in milliseconds for ccr execution (default: 600000 = 10 minutes). Set to a shorter value like 30000 (30 seconds) for faster feedback during testing.
 
 ## Error Handling

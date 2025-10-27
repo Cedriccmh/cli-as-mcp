@@ -21,6 +21,7 @@ npm run build
       "args": ["/absolute/path/to/cli-as-mcp/dist/server.js"],
       "env": {
         "CCR_PATH": "ccr",
+        "CCR_SUBCOMMAND": "code",
         "CCR_TIMEOUT_MS": "600000"
       }
     }
@@ -192,6 +193,22 @@ taskPath: my-search.md
 ```json
 "CCR_PATH": "C:\\path\\to\\scripts\\ccr-dummy.ps1"
 ```
+
+### CCR_SUBCOMMAND
+
+指定 ccr 的子命令（如 `code`）。
+
+**默认值**：空（不使用子命令）
+
+**示例**：
+```json
+"CCR_SUBCOMMAND": "code"
+```
+
+**说明**：
+- 如果设置为 `code`，执行命令为：`ccr code --dangerously-skip-permissions 'task file <path>'`
+- 如果不设置（默认），执行命令为：`ccr --dangerously-skip-permissions 'task file <path>'`
+- 这允许你灵活配置 ccr 的调用方式
 
 ### CCR_TIMEOUT_MS
 
